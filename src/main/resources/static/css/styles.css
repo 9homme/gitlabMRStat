@@ -1,0 +1,13 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+div.banner {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+  margin: 10px;
+}
+span.x {
+  padding: 10px;
+  font-size: 50px;
+}

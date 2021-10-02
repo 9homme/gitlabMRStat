@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <title>{{title}}</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            <div class="banner">
+                <img src="images/gitlab_logo.png" height="100px"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <form method="get" id="search-form" autocomplete="off">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="username" id="username" value="{{username}}" placeholder="Gitlab username" aria-label="Gitlab username"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" form="search-form"  type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <div class="table-responsive">
+                <table class="table table-light table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Username</th>
+                        <th>Project/MR# No.</th>
+                        <th>Title</th>
+                        <th>State</th>
+                        <th>Total Comments</th>
+                        <th>PingPong Times</th>
+                        <th>Total Changes</th>
+                        <th>Created At</th>
+                        <th>Ready for review At</th>
+                        <th>Merged At</th>
+                        <th>Ready to Merged</th>
+                        <th>Created to Merged</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#result}}
+                        <tr>
+                            <td>{{user.username}}</td>
+                            <td>{{mergeRequest.references.full}}({{mergeRequest.projectId}})</td>
+                            <td>{{mergeRequest.title}}</td>
+                            <td>{{mergeRequest.state}}</td>
+                            <td>{{totalNoOfNotes}}</td>
+                            <td>{{pingPongTimes}}</td>
+                            <td>{{totalNoOfChanges}}</td>
+                            <td>{{createdAt}}</td>
+                            <td>{{readyForReviewAt}}</td>
+                            <td>{{mergedAt}}</td>
+                            <td>{{readyToMergedPeriod}}</td>
+                            <td>{{openToMergedPeriod}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <details>
+                                    <table class="table table-striped table-sm">
+                                        <thead class="table-dark">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Author</th>
+                                            <th>DateTime</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#events}}
+                                            <tr>
+                                                <td>{{description}}</td>
+                                                <td>{{author}}</td>
+                                                <td>{{dateTime}}</td>
+                                            </tr>
+                                        {{/events}}
+                                        </tbody>
+                                    </table>
+                                </details>
+                            </td>
+                        </tr>
+                    {{/result}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+        {{^result}}No result!!{{/result}}
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<!-- Bootstrap 4 Autocomplete -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+<script>
+    var src = {
+      {{#users}}
+        "{{username}}":{{id}},
+      {{/users}}
+    };
+
+    function onSelectItem(item, element) {
+       $('#username').focus();
+    }
+
+    $('#username').autocomplete({
+      source: src,
+      treshold: 1,
+      onSelectItem: onSelectItem
+    });
+</script>
+</body>
+</html>
